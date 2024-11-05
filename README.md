@@ -1,14 +1,14 @@
-# Nerfies
+# QUILL: Quotation Generation Enhancement of Large Language Models
 
-This is the repository that contains source code for the [Nerfies website](https://nerfies.github.io).
+This is the repository that contains source code for the [QUILL website](https://gracexiaoo.github.io/quill.github.io/).
 
-If you find Nerfies useful for your work please cite:
+If you find QUILL useful for your work please cite:
+
 ```
-@article{park2021nerfies
-  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
-  title     = {Nerfies: Deformable Neural Radiance Fields},
-  journal   = {ICCV},
-  year      = {2021},
+@article{xiao24quill
+  author    = {JinXiao, BoweiZhang, QianyuHe, JiaqingLiang, FengWei, JingleiChen, ZujieLiang, DeqingYang, YanghuaXiao},
+  title     = {QUILL: Quotation Generation Enhancement of Large Language Models},
+  year      = {2024},
 }
 ```
 
