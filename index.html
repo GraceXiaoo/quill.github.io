@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="QUILL: Quotation Generation Enhancement of Large Language Models">
+  <meta name="keywords"
+    content="Quotation Generation, Large Language Models, Hallucination">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QUILL: Quotation Generation Enhancement of LLMs</title>
+
+  <!-- down box: https://www.jq22.com/jquery-info23962 -->
+  <link rel="stylesheet" href="static/css/bootstrap-3.3.4.css">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <!--更换图片路径--> -->
+  <link rel="icon" href="static/images/quill.png">
+
+  <script src="static/js/jquery-3.5.1.min.js"></script>
+  <script src="static/js/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+  <!-- down box: https://www.jq22.com/jquery-info23962 -->
+  <script src="static/js/bootstrap-3.3.4.js"></script>
+  <style>
+    /* 放大后的图片样式 */
+    .enlarged {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.8);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        overflow: hidden;
+        display: none;
+    }
+
+    .enlarged img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .carousel {
+            position: relative;
+            width: 600px;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+    .carousel-images {
+            display: flex;
+    }
+    .carousel-images img {
+            width: 600px;
+            height: 300px;
+            border-radius: 10px;
+        }
+    .dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+    .dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+    .active {
+            background-color: #717171;
+        }
+</style>
+  <style>
+    .panel-heading-click:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <img src="static/images/quill.png" style="max-width: 30%;" />
+            <h1 class="title is-4 publication-title">Make LLMs' quotations more accurate and elegant !</h1>
+            <h2 class="title is-2 publication-title">QUILL: Quotation Generation Enhancement of Large Language Models</h2>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://github.com/GraceXiaoo">Jin Xiao</a><sup>1</sup>,</span>
+              <span class="author-block">
+                  <a href="http://shgao.site">Bowei Zhang</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://github.com/Abbey4799">Qianyu He</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://lsdefine.github.io/">Jiaqing Liang<span>*</span></a><sup>1</sup>,
+              </span>
+              <br>
+              <span class="author-block">
+                <a href="huodeng.wf@mybank.cn">Feng Wei</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="chenjinglei.cjl@mybank.cn">Jinglei Chen</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="jokieleung@outlook.com">Zujie Liang</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://sds.fudan.edu.cn/_s427/a4/2f/c22442a238639/page.psp">Deqing Yang</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="http://kw.fudan.edu.cn/people/xiaoyanghua/">Yanghua Xiao</a><sup>1</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Fudan University</span>
+              <span class="author-block"><sup>2</sup>MYbank, Ant Group</span>
+            </div>
+
+            <!-- https://www.runoob.com/font-awesome/fontawesome-reference.html -->
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- Arxiv Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2312.02439" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fa fa-book"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/sail-sg/CLoT" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/zhongshsh/CLoT-Oogiri-GO" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fa fa-database"></i>
+                    </span>
+                    <span>Dataset</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="http://10.176.40.139:8090/" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fa fa-book"></i>
+                    </span>
+                    <span>Demo</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div class="column">
+              <h4 class="panel-title has-text-justified">
+                <i class="fa fa-bullhorn"></i>&nbsp; 
+                🙋 While Large language models (LLMs) have become excellent writing assistants, they still struggle with <font color=#c56724>Quotation Generation</font>. This is because they either hallucinate when providing factual quotations or fail to provide quotes that exceed human expectations.
+              </h4>
+              <br>
+              <h4 class="panel-title has-text-justified">
+                <i class="fa fa-bullhorn"></i>&nbsp; 
+                🤗 To bridge the gap, we first establish <font color=#c56724>a holistic and automatic evaluation system</font> for quotation generation task, which consists of five criteria each with corresponding automatic metric.
+              </h4>
+              <br>
+              <h4 class="panel-title has-text-justified">
+                <i class="fa fa-bullhorn"></i>&nbsp; 
+                🔥 To improve the LLMs’ quotation generation abilities, we construct <font color=#c56724>a bilingual knowledge base</font> that is broad in scope and rich in dimensions, containing up to 32,022 quotes
+              </h4>
+              <br>
+              <h4 class="panel-title has-text-justified">
+                <i class="fa fa-bullhorn"></i>&nbsp; 
+                🎉 Guided by our critiria, we further design <font color=#c56724>a quotation-specific metric</font> to rerank the retrieved quotations from the knowledge base. Extensive experiments show that our metrics strongly correlate with human preferences.
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h3 class="title is-3">Framework</h3>
+          <img src="static/images/framework.png" style="max-width: 100%;" />
+
+          <h4 class="panel-title has-text-justified">
+            <i class="fa fa-bullhorn"></i>&nbsp; 
+            ✍️ The framework for our <font color=#c56724>Quotation Generation (QG)</font> task research. We first establish an evaluation system with 5 evaluation criteria and automatic metrics, then build a quotation knowledge base covering multiple languages, topics and eras, and finally propose a quotation-specific reranking metric to rerank the quotations recalled in the RAG stage and improve the performance of QG tasks.
+          </h4>
+          </div>
+        </div>
+      </div>
+
+  </section>
+
+  <!--具体的case
+  放一些demo的case
+  放一些rerank的case
+  -->
+  
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h3 class="title is-3">Quotation Generation(QG) Cases</h3>
+          </div>
+        </div>
+      </div>
+      <div class="carousel">
+        <div class="carousel-images">
+            <img src="static/images/philosophy.png" alt="Image 1">
+            <img src="static/images/friendship.png" alt="Image 2">
+            <img src="static/images/persistence.png" alt="Image 3">
+            <img src="static/images/learning.png" alt="Image 4">
+            <img src="static/images/integrity.png" alt="Image 5">
+            <!-- Add more images as needed -->
+        </div>
+        <div class="dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <!-- Add more dots as needed -->
+        </div>
+    </div>
+    <script>
+      let currentIndex = 0;
+      const slides = document.querySelectorAll('.carousel-images img');
+      const dots = document.querySelectorAll('.dot');
+      const carouselImages = document.querySelector('.carousel-images');
+    
+      function showSlide(index) {
+          if (index >= slides.length) index = 0;
+          if (index < 0) index = slides.length - 1;
+          currentIndex = index;
+    
+          //const offset = -index * 700; // assuming each image is 300px wide
+          //document.querySelector('.carousel-images').style.transform = `translateX(${offset}px)`;
+    
+          const offset = Array.from(slides).slice(0, index).reduce((acc, img) => acc + img.offsetWidth, 0);
+          carouselImages.style.transform = `translateX(-${offset}px)`;
+    
+          dots.forEach(dot => dot.classList.remove('active'));
+          dots[currentIndex].classList.add('active');
+      }
+    
+      function currentSlide(index) {
+          showSlide(index);
+      }
+    
+      setInterval(() => {
+          showSlide(currentIndex + 1);
+      }, 3000); // Change image every 3 seconds
+    </script>
+
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h3 class="title is-3">QUILL Copilo Demo</h3>
+
+          <p>Want to rewrite text with quotes? Try our demo: <a href="http://10.176.40.139:8090/" target="_blank">QUILL Copilo</a>。</p>
+          </div>
+        </div>
+      </div>
+
+  </section>
+
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{park2021nerfies,
+    author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+    title     = {Nerfies: Deformable Neural Radiance Fields},
+    journal   = {ICCV},
+    year      = {2021},
+  }</code></pre>
+    </div>
+  </section>
+
+
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link"
+           href="./static/videos/nerfies_paper.pdf">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                                                  href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This means you are free to borrow the <a
+                href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+              we just ask that you link back to this page in the footer.
+              Please remember to remove the analytics code included in the header of the website which
+              you do not want on your website.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  </body>
+  </html>
+  
+
+
+  <!--放一些我们的demo主页信息
+  -->
+
+  <!-- Paper poster -->
+  <!-- <section class="hero is-small is-light">
+    <div clas
